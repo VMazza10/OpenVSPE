@@ -4,6 +4,11 @@ Sistema de ponte Serial/TCP para balanças (Toledo Prix III) e impressoras térm
 
 Criado como alternativa ao VSPE (Virtual Serial Ports Emulator), que exige conta e não inicia junto com o Windows: o OpenVSPE roda como serviço do Windows e sobe automaticamente, sem login. Projeto independente, sem vínculo com a Eterlogic.
 
+![Tela principal do OpenVSPE](docs/images/tela-principal.png)
+
+## ⬇️ Download
+Baixe o `.zip` da versão mais recente em [Releases](https://github.com/VMazza10/OpenVSPE/releases/latest), extraia e execute `OpenVSPE_V*.exe` como administrador.
+
 ## 🚀 Funcionalidades
 - Emulação de porta serial via TCP.
 - Suporte a múltiplas balanças e impressoras.
