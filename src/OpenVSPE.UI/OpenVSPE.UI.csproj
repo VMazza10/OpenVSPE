@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\OpenVSPE.Core\OpenVSPE.Core.csproj" />
+    <ProjectReference Include="..\OpenVSPE.Printing\OpenVSPE.Printing.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    <PackageReference Include="RJCP.SerialPortStream" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="app.ico" />
+    <Resource Include="icon.png" />
+    <None Update="app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="reparar.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="reparar_balanca.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <Version>2.0.7</Version>
+    <AssemblyVersion>2.0.7.0</AssemblyVersion>
+    <FileVersion>2.0.7.0</FileVersion>
+    <AssemblyName>OpenVSPE_V2.0.7</AssemblyName>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+</Project>

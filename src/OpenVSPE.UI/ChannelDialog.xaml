@@ -1,0 +1,94 @@
+<Window x:Class="OpenVSPE.UI.ChannelDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Configurar Canal" 
+        Height="400" Width="500" 
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#F0F0F0">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- TIPO DO CANAL -->
+        <GroupBox Grid.Row="0" Header="Tipo do Canal" Margin="0,0,0,8" Padding="4">
+            <StackPanel Orientation="Horizontal" Margin="8,4">
+                <RadioButton x:Name="rbSerial" Content="Serial (COM -> TCP)" IsChecked="True" Margin="0,0,20,0"
+                             Checked="rbTipo_Changed"/>
+                <RadioButton x:Name="rbPrinter" Content="Impressora USB (-> TCP)" 
+                             Checked="rbTipo_Changed"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- PAINEL SERIAL -->
+        <Grid Grid.Row="1" x:Name="painelSerial">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Header="Configuracao TCP" Padding="4">
+                <StackPanel Margin="8,4">
+                    <TextBlock Text="Local TCP Port:" Margin="0,0,0,4"/>
+                    <TextBox x:Name="txtPortaTcp" Text="9100" FontSize="13" Padding="4"/>
+                    <TextBlock Text="Interface IP:" Margin="0,8,0,4"/>
+                    <TextBox x:Name="txtIpEscuta" FontSize="13" Padding="4"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Column="2" Header="Source serial port" Padding="4">
+                <StackPanel Margin="8,4">
+                    <ComboBox x:Name="cmbPortaCom" Padding="4" FontSize="13"/>
+                    <CheckBox x:Name="chkIsBalanca" Content="É uma Balança? (Modo Simples)" Margin="0,8,0,0" ToolTip="Desativa configurações de hardware agressivas. Marque se a porta der Erro 31 (Comum em balanças USB CH340)."/>
+                    <Button Content="Settings..." x:Name="btnSettings" Margin="0,10,0,0" 
+                            Padding="16,6" HorizontalAlignment="Right" Click="btnSettings_Click"/>
+
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+
+        <!-- PAINEL IMPRESSORA -->
+        <Grid Grid.Row="1" x:Name="painelImpressora" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Header="Configuracao TCP" Padding="4">
+                <StackPanel Margin="8,4">
+                    <TextBlock Text="Local TCP Port:" Margin="0,0,0,4"/>
+                    <TextBox x:Name="txtPortaTcpPrinter" Text="9100" FontSize="13" Padding="4"/>
+                    <TextBlock Text="Interface IP:" Margin="0,8,0,4"/>
+                    <TextBox x:Name="txtIpEscutaPrinter" FontSize="13" Padding="4"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Column="2" Header="Impressora" Padding="4">
+                <StackPanel Margin="8,4">
+                    <ComboBox x:Name="cmbImpressora" Padding="4" FontSize="13"/>
+                    <Button Content="Atualizar Lista" Margin="0,10,0,0" Padding="12,6" 
+                            HorizontalAlignment="Right" Click="btnAtualizarPrinters_Click"/>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+
+        <!-- Nome do canal -->
+        <StackPanel Grid.Row="2" Margin="0,10,0,0">
+            <TextBlock Text="Nome (opcional - gerado automaticamente se vazio):" Margin="0,0,0,4"/>
+            <TextBox x:Name="txtNome" Padding="4" FontSize="13"/>
+        </StackPanel>
+
+        <!-- BOTOES -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="OK" Width="90" Padding="4,8" Margin="0,0,8,0" Click="btnOk_Click" IsDefault="True" FontSize="13"/>
+            <Button Content="Cancelar" Width="90" Padding="4,8" Click="btnCancelar_Click" IsCancel="True" FontSize="13"/>
+        </StackPanel>
+    </Grid>
+</Window>

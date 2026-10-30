@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-OpenVSPE.Service-7d836096-9010-4277-b2c3-e1fc540671ff</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenVSPE.Core\OpenVSPE.Core.csproj" />
+    <ProjectReference Include="..\OpenVSPE.Serial\OpenVSPE.Serial.csproj" />
+    <ProjectReference Include="..\OpenVSPE.Printing\OpenVSPE.Printing.csproj" />
+  </ItemGroup>
+</Project>
