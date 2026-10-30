@@ -1,79 +1,74 @@
-# Manual do Usuário e Visão Geral - OpenVSPE
+# Manual do usuário do OpenVSPE
 
-Bem-vindo ao **OpenVSPE**, a ponte definitiva para comunicação entre sistemas de PDV (Ponto de Venda) e suas impressoras/balanças!
+O OpenVSPE liga o sistema de vendas (PDV) às impressoras e balanças da loja. Muitos PDVs, principalmente os antigos ou muito específicos, só sabem mandar impressão pela rede (IP) ou ler o peso da balança por uma porta serial (COM). O OpenVSPE faz a ponte entre esses dois lados e roda em segundo plano, sem ninguém precisar abrir nada.
 
----
+## O que ele faz
 
-## 1. O que o OpenVSPE faz? (Visão Geral)
+Na impressão, ele recebe os comandos que o PDV manda para um IP e uma porta e entrega direto na impressora USB, em modo RAW, sem depender de driver virtual.
 
-O OpenVSPE funciona como um "tradutor" e "ponte" de conexões. Muitos sistemas de Ponto de Venda (PDVs) antigos ou específicos só conseguem enviar impressões através da rede (IP) ou ler peso de balanças através de portas seriais (COM). 
-O OpenVSPE conecta essas duas pontas de forma invisível e automática!
+Alguns PDVs perguntam à impressora se ela está online antes de imprimir e travam com timeout ou erro de "String" quando não recebem resposta. O OpenVSPE responde a essas consultas no lugar dela, imitando o comportamento das impressoras Epson e Elgin. Chamamos isso de Fake ACK.
 
-### Principais Recursos e Vantagens:
-✅ **Impressão Direta no Cabo USB via Rede (Printer RAW):** 
-Recebe comandos de impressão do seu PDV (enviados para um IP e Porta) e "cospe" diretamente na impressora conectada via USB, sem depender de drivers virtuais pesados.
-✅ **Fake ACK Inteligente (Exclusivo):** 
-Simula o comportamento bidirecional de impressoras Epson/Elgin. O seu PDV não vai mais travar (dar timeout ou erro de "String") esperando a impressora responder se está online!
-✅ **Ponte Serial (Balanças e Equipamentos):** 
-Recebe requisições de rede e as transmite para uma porta COM física ou virtual de forma contínua.
-✅ **Invisível e Automático:** 
-O programa roda como um Serviço do Windows protegido. Ele não fecha se o usuário deslogar, reinicia sozinho em caso de falha, e a interface gráfica abre escondida ali perto do relógio do Windows na inicialização.
-✅ **Botão "Testar Impressão" Embutido:** 
-Teste a comunicação com um único clique de dentro do próprio aplicativo, isolando problemas de rede do seu PDV.
+Nas balanças e em outros equipamentos seriais, ele recebe as requisições pela rede e repassa para uma porta COM, física ou virtual.
 
----
+O programa roda como serviço do Windows. Ele continua funcionando quando o usuário sai da sessão e reinicia sozinho se falhar. A interface abre minimizada perto do relógio quando o Windows inicia.
 
-## 2. Instalação Passo a Passo
+Dentro do próprio aplicativo há um botão "Testar" que imprime um cupom de teste. Assim dá para saber se o problema está no OpenVSPE ou na configuração do PDV.
 
-O processo é quase 100% automático para facilitar a vida de quem está instalando no cliente:
-1. Copie a pasta de instalação (ou o arquivo `OpenVSPE.Setup.exe`) para o computador que possui a impressora/balança ligada no cabo.
-2. Dê um duplo-clique no **`OpenVSPE.Setup.exe`**.
-3. Clique em **"Instalar"**.
-   *O instalador irá baixar as dependências (.NET), configurar o Firewall, instalar o serviço e criar o atalho nas inicializações para abrir junto com o Windows.*
-4. Ao final, clique em **"Concluir"**. O aplicativo abrirá na mesma hora.
+## Instalação
 
-> **Nota:** Nas próximas vezes que o PC for ligado, o ícone do OpenVSPE aparecerá escondido na bandeja do sistema (perto do relógio).
+A instalação é quase toda automática:
 
----
+1. Baixe o `.zip` da Release, extraia e copie a pasta inteira para o computador onde a impressora ou a balança está ligada no cabo. O instalador (`OpenVSPE_V*.exe`) precisa das pastas `ui` e `service` ao lado dele.
+2. Dê dois cliques no instalador e confirme a permissão de administrador.
+3. Clique em "Instalar". O instalador baixa o .NET se precisar, configura o firewall, instala o serviço e cria o atalho que abre o programa junto com o Windows.
+4. No final, clique em "Concluir". O aplicativo abre na hora.
 
-## 3. Como Configurar e Utilizar
+Depois disso, sempre que o computador ligar, o ícone do OpenVSPE fica na bandeja do sistema, perto do relógio.
 
-Ao abrir o OpenVSPE, você verá a interface principal com uma lista das suas conexões (Canais).
+## Como configurar
 
-### A) Criando um Canal para Impressoras USB (Printer RAW)
-Se você quer que o seu PDV envie a impressão via Rede (IP) e ela saia numa impressora USB (Ex: Elgin, Bematech, Epson).
+A tela principal mostra a lista de conexões, que o programa chama de canais.
 
-1. Clique em **"Novo"** na barra superior.
-2. Preencha o **Nome** (Ex: Impressora Caixa 01).
-3. Em **Tipo**, selecione a opção **Printer**.
-4. Abaixo, no campo **NomeImpressora**, você **DEVE** digitar o nome da impressora **exatamente igual** a como ela aparece no "Painel de Controle -> Dispositivos e Impressoras" do Windows (Ex: `ELGIN I9` ou `Generic / Text Only`).
-5. Em **Porta TCP**, defina a porta que o seu sistema de vendas usará para enviar a impressão (o padrão das impressoras de rede costuma ser **9100**).
-6. Clique em **Salvar**, e na janela principal clique no botão **Salvar** novamente.
+### Impressora USB (canal Printer)
 
-### B) Criando um Canal para Balanças (Serial)
-Se você precisa conectar uma balança via porta COM mas seu sistema procura por ela na Rede.
+Use este tipo quando o PDV manda a impressão pela rede e ela precisa sair numa impressora USB, como Elgin, Bematech ou Epson.
 
-1. Clique em **"Novo"**.
-2. Preencha o **Nome** (Ex: Balança Filizola).
-3. Em **Tipo**, selecione **Serial**.
-4. Configure a **Porta COM** (Ex: `COM3`), e os parâmetros técnicos (BaudRate, DataBits, StopBits) conforme o manual da balança.
-5. Em **Porta TCP**, coloque a porta que vai ouvir o seu sistema (Ex: `4001`).
+1. Clique em "Novo" na barra superior.
+2. Preencha o Nome (por exemplo, Impressora Caixa 01).
+3. Em Tipo, escolha Printer.
+4. No campo NomeImpressora, digite o nome da impressora exatamente como aparece no Windows, em Painel de Controle > Dispositivos e Impressoras (por exemplo, `ELGIN I9` ou `Generic / Text Only`). Se o nome tiver qualquer diferença, a impressão não sai.
+5. Em Porta TCP, coloque a porta que o sistema de vendas usa para imprimir. Impressoras de rede costumam usar a 9100.
+6. Clique em "Salvar" na janela do canal e depois em "Salvar" de novo na janela principal.
+
+### Balança (canal Serial)
+
+Use este tipo quando a balança está numa porta COM, mas o sistema de vendas procura por ela na rede.
+
+1. Clique em "Novo".
+2. Preencha o Nome (por exemplo, Balança Filizola).
+3. Em Tipo, escolha Serial.
+4. Configure a Porta COM (por exemplo, `COM3`) e os parâmetros BaudRate, DataBits e StopBits conforme o manual da balança.
+5. Em Porta TCP, coloque a porta em que o sistema vai se conectar (por exemplo, `4001`).
 6. Salve.
 
-### C) Operações de Rotina
-- **Iniciar/Parar:** Após criar um canal, clique no botão "Iniciar" (verde) na barra superior. O ícone ao lado do canal ficará verde e ele estará pronto para receber as requisições.
-- **Botão Testar:** Selecione a sua impressora na lista e clique no ícone **"Testar"** na barra superior. Um cupom de teste sairá na impressora e, caso haja erro no nome digitado, o sistema o avisará claramente na tela.
-- **Botão Logs:** Caso precise de ajuda avançada, clique em "Logs". Uma pasta abrirá listando tudo o que o OpenVSPE recebeu e processou naquele dia.
+### No dia a dia
 
----
+Depois de criar um canal, clique em "Iniciar" (o botão verde da barra superior). Quando o ícone ao lado do canal ficar verde, ele está pronto para receber as requisições. "Parar" desliga o canal.
 
-## Dúvidas Frequentes
+Para testar uma impressora, selecione-a na lista e clique em "Testar". Um cupom de teste sai na impressora. Se o nome estiver digitado errado, o programa avisa na tela.
 
-**1. O meu sistema mostra "Timeout" ou "Erro de String vazia" ao tentar imprimir!**
-Se o OpenVSPE já está aberto e o botão "Testar" funciona: vá no seu sistema de vendas e verifique as configurações (IP do computador onde o OpenVSPE está, e a Porta configuradas estão corretas). Cuidado para não deixar opções ou nomes em branco no cadastro da impressora do seu software.
+O botão "Logs" abre a pasta com tudo o que o OpenVSPE recebeu e processou no dia. É o primeiro lugar para olhar quando algo não funciona.
 
-**2. Eu clico em iniciar, mas o "Status" da impressora fica laranja "Erro".**
-Isso acontece 99% das vezes quando o campo **NomeImpressora** está diferente do Windows. Vá no Painel de Controle de Impressoras, confira os espaços ou peça para o Windows renomear a impressora para um nome mais fácil (Ex: `CAIXA1`) e o coloque de forma idêntica no OpenVSPE.
+## Dúvidas frequentes
 
-**3. Preciso deixar a tela do OpenVSPE sempre aberta?**
-**Não!** Você pode fechar no `X` da janela que ele vai se esconder do lado do relógio. A versão mais nova também inicia junto com o Windows de forma invisível. O OpenVSPE toma conta de tudo nos bastidores!
+### O sistema de vendas mostra "Timeout" ou "Erro de String vazia" ao imprimir
+
+Se o OpenVSPE está aberto e o botão "Testar" funciona, o problema está na configuração do sistema de vendas. Confira se o IP do computador onde o OpenVSPE está e a porta estão corretos, e não deixe opções ou nomes em branco no cadastro da impressora.
+
+### Cliquei em "Iniciar", mas o status da impressora fica laranja, em "Erro"
+
+Quase sempre o campo NomeImpressora está diferente do nome no Windows. Abra o painel de impressoras e confira os espaços. Se ficar difícil, renomeie a impressora no Windows para algo simples, como `CAIXA1`, e use exatamente esse nome no OpenVSPE.
+
+### Preciso deixar a tela do OpenVSPE aberta?
+
+Não. Ao fechar no X, a janela vai para a bandeja, perto do relógio, e o serviço continua rodando. O programa também inicia sozinho com o Windows.
