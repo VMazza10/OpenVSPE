@@ -1,5 +1,7 @@
 # OpenVSPE
 
+[![Build](https://github.com/VMazza10/OpenVSPE/actions/workflows/build.yml/badge.svg)](https://github.com/VMazza10/OpenVSPE/actions/workflows/build.yml)
+
 Ponte Serial/TCP para balanças de porta serial (COM) e impressoras térmicas, feita em .NET 8.
 
 Fiz o OpenVSPE porque o VSPE (Virtual Serial Ports Emulator) original exigia conta e não abria junto com o Windows. Aqui tudo roda como serviço do Windows: o computador liga e os canais já estão no ar, sem login. É um projeto independente, sem vínculo com a Eterlogic.
