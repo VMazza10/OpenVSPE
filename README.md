@@ -54,5 +54,8 @@ Os arquivos de saída estarão localizados em `/build/releases/DEPLOY`.
 - O sistema é focado na arquitetura **x86** para garantir compatibilidade total com drivers de balanças e portas seriais virtuais.
 - A solução principal é `OpenVSPE.sln`, que inclui todos os módulos, incluindo o Instalador.
 
+## 📄 Licença
+Distribuído sob a licença MIT. Veja [LICENSE](LICENSE).
+
 ---
 **Desenvolvido por Vinicius Mazaroski**
