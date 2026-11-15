@@ -1,7 +1,7 @@
 <Window x:Class="OpenVSPE.Setup.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="OpenVSPE Setup" Height="400" Width="550"
+        Title="OpenVSPE Setup" Height="400" Width="650"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Background="#1E1E1E" Foreground="White" BorderThickness="0">
     <Window.Resources>
