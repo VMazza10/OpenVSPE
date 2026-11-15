@@ -25,7 +25,7 @@ A instalação é quase toda automática:
 
 Depois disso, sempre que o computador ligar, o ícone do OpenVSPE fica na bandeja do sistema, perto do relógio.
 
-Se alguém fechar o programa, ou se ele travar, use o atalho "Reabrir OpenVSPE" na área de trabalho. Ele fecha o que tiver sobrado aberto e abre o OpenVSPE de novo, sempre com uma cópia só. O programa volta para a bandeja do relógio.
+Se alguém fechar o programa, ele abre de novo sozinho em poucos segundos (veja "Reabrir sozinho se fechar" em Configurações). Se ele travar sem fechar, rode o `Reabrir_OpenVSPE.bat` da pasta `C:\Program Files (x86)\OpenVSPE\ui`. Ele fecha o que tiver sobrado aberto e abre o OpenVSPE de novo, sempre com uma cópia só.
 
 ## Como configurar
 
