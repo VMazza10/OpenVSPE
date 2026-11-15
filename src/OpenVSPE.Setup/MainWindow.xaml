@@ -27,6 +27,9 @@
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="#1E1E1E"/>
                 </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
 
@@ -38,9 +41,9 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
+                        <Border x:Name="border" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
@@ -50,6 +53,17 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#33FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Ação destrutiva: separada e em vermelho para não ser clicada sem querer -->
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
+            <Setter Property="Foreground" Value="#FF7070"/>
+            <Setter Property="BorderBrush" Value="#66FF7070"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#22FF7070"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -71,26 +85,31 @@
 
         <!-- Content -->
         <StackPanel Grid.Row="1" Margin="30" VerticalAlignment="Center">
-            <TextBlock x:Name="lblStatus" Text="Pronto para instalar o OpenVSPE no seu computador." 
+            <TextBlock x:Name="lblStatus" Text="Pronto para instalar o OpenVSPE no seu computador."
                        TextWrapping="Wrap" FontSize="16" Margin="0,0,0,20" Foreground="#EEEEEE"/>
-            
-            <ProgressBar x:Name="pbProgress" Height="25" Foreground="#00ADB5" Background="#393E46" 
+
+            <ProgressBar x:Name="pbProgress" Height="25" Foreground="#00ADB5" Background="#393E46"
                          BorderThickness="0" Visibility="Collapsed"/>
             <TextBlock x:Name="lblSubStatus" Text="" FontSize="12" Opacity="0.6" Margin="0,5,0,0" Visibility="Collapsed"/>
         </StackPanel>
 
+        <!-- Rodapé: crédito à esquerda, ações à direita, em colunas para nunca se sobreporem -->
         <Border Background="#252525" Grid.Row="2">
             <Grid Margin="20,0">
-                <TextBlock Text="Desenvolvido por Vinicius Mazaroski" 
-                           VerticalAlignment="Center" HorizontalAlignment="Left"
-                           FontSize="11" Opacity="0.5" FontStyle="Italic"/>
-                
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:Name="btnUninstall" Content="Desinstalar" Click="btnUninstall_Click" Width="100" Height="35" Margin="5"
-                            Style="{StaticResource SecondaryButton}" Visibility="Collapsed"/>
-                    <Button x:Name="btnCancel" Content="Cancelar" Click="btnCancel_Click" Width="100" Height="35" Margin="5" 
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Desenvolvido por Vinicius Mazaroski" TextTrimming="CharacterEllipsis"
+                           VerticalAlignment="Center" FontSize="11" Opacity="0.5" FontStyle="Italic"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="btnUninstall" Content="Desinstalar" Click="btnUninstall_Click" Width="100" Height="35" Margin="5,0,25,0"
+                            Style="{StaticResource DangerButton}" Visibility="Collapsed"/>
+                    <Button x:Name="btnCancel" Content="Cancelar" Click="btnCancel_Click" Width="100" Height="35" Margin="5,0"
                             Style="{StaticResource SecondaryButton}"/>
-                    <Button x:Name="btnInstall" Content="Instalar Agora" Click="btnInstall_Click" Width="120" Height="35" Margin="5"
+                    <Button x:Name="btnInstall" Content="Instalar Agora" Click="btnInstall_Click" Width="120" Height="35" Margin="5,0,0,0"
                             Style="{StaticResource ModernButton}"/>
                 </StackPanel>
             </Grid>

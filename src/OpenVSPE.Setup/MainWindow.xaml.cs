@@ -14,7 +14,21 @@ namespace OpenVSPE.Setup
         {
             InitializeComponent();
             if (Directory.Exists(_targetDir))
+            {
+                lblStatus.Text = "O OpenVSPE já está instalado neste computador. Você pode atualizar para esta versão ou desinstalar.";
+                btnInstall.Content = "Atualizar";
                 btnUninstall.Visibility = Visibility.Visible;
+            }
+        }
+
+        // Ao terminar, só o "Concluir" faz sentido na tela.
+        private void MostrarSoConcluir()
+        {
+            btnCancel.Visibility = btnUninstall.Visibility = Visibility.Collapsed;
+            btnInstall.Content = "Concluir";
+            btnInstall.IsEnabled = true;
+            btnInstall.Click -= btnInstall_Click;
+            btnInstall.Click += (s, ev) => Close();
         }
 
         private async void btnUninstall_Click(object sender, RoutedEventArgs e)
@@ -36,11 +50,7 @@ namespace OpenVSPE.Setup
 
                 lblStatus.Text = "OpenVSPE removido deste computador.";
                 lblSubStatus.Text = apagarCanais ? "Os canais e os logs também foram apagados." : "Os canais ficaram guardados para uma próxima instalação.";
-                btnUninstall.Visibility = Visibility.Collapsed;
-                btnInstall.Content = "Concluir";
-                btnInstall.IsEnabled = true;
-                btnInstall.Click -= btnInstall_Click;
-                btnInstall.Click += (s, ev) => Close();
+                MostrarSoConcluir();
             }
             catch (Exception ex)
             {
@@ -79,8 +89,7 @@ namespace OpenVSPE.Setup
         {
             try
             {
-                btnInstall.IsEnabled = false;
-                btnCancel.IsEnabled = false;
+                btnInstall.IsEnabled = btnCancel.IsEnabled = btnUninstall.IsEnabled = false;
                 pbProgress.Visibility = Visibility.Visible;
                 lblSubStatus.Visibility = Visibility.Visible;
 
@@ -88,16 +97,12 @@ namespace OpenVSPE.Setup
 
                 lblStatus.Text = "Instalação concluída com sucesso!";
                 lblSubStatus.Text = "O atalho foi criado na sua área de trabalho.";
-                btnInstall.Content = "Concluir";
-                btnInstall.IsEnabled = true;
-                btnInstall.Click -= btnInstall_Click;
-                btnInstall.Click += (s, ev) => Close();
+                MostrarSoConcluir();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro durante a instalação: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                btnInstall.IsEnabled = true;
-                btnCancel.IsEnabled = true;
+                btnInstall.IsEnabled = btnCancel.IsEnabled = btnUninstall.IsEnabled = true;
             }
         }
 
