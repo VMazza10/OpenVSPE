@@ -29,10 +29,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <Version>2.0.10</Version>
-    <AssemblyVersion>2.0.10.0</AssemblyVersion>
-    <FileVersion>2.0.10.0</FileVersion>
-    <AssemblyName>OpenVSPE_V2.0.10</AssemblyName>
+    <Version>2.0.11</Version>
+    <AssemblyVersion>2.0.11.0</AssemblyVersion>
+    <FileVersion>2.0.11.0</FileVersion>
+    <AssemblyName>OpenVSPE_V2.0.11</AssemblyName>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>app.ico</ApplicationIcon>
   </PropertyGroup>
