@@ -141,13 +141,29 @@ namespace OpenVSPE.Setup
 
         private void StopExistingProcesses()
         {
-            // Mata a UI antiga e a nova (V1.1.7) e o serviço
-            int currentPid = Process.GetCurrentProcess().Id;
-            foreach (var p in Process.GetProcesses())
+            int currentPid = Environment.ProcessId;
+            for (int rodada = 0; rodada < 2; rodada++)
             {
-                if (p.Id != currentPid && p.ProcessName.StartsWith("OpenVSPE", StringComparison.OrdinalIgnoreCase))
+                if (rodada > 0)
                 {
-                    try { p.Kill(); } catch { }
+                    // O vigia pode religar a tela durante a primeira rodada de encerramento.
+                    Thread.Sleep(1000);
+                }
+
+                foreach (var processo in Process.GetProcesses())
+                {
+                    using (processo)
+                    {
+                        try
+                        {
+                            if (processo.Id != currentPid
+                                && processo.ProcessName.StartsWith("OpenVSPE", StringComparison.OrdinalIgnoreCase))
+                            {
+                                processo.Kill();
+                            }
+                        }
+                        catch { }
+                    }
                 }
             }
 
