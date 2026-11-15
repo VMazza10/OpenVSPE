@@ -78,6 +78,12 @@
                     <TextBlock Text=" Salvar" VerticalAlignment="Center" Margin="4,0,0,0"/>
                 </StackPanel>
             </Button>
+            <Button x:Name="btnConfiguracoes" ToolTip="Configurações" Click="btnConfiguracoes_Click" Padding="6,4">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    <TextBlock Text=" Configurações" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                </StackPanel>
+            </Button>
         </ToolBar>
 
         <!-- LISTA DE CANAIS (estilo VSPE) -->

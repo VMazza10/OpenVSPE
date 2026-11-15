@@ -1,0 +1,52 @@
+<Window x:Class="OpenVSPE.UI.ConfiguracoesDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Configurações" Width="500" SizeToContent="Height"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        ShowInTaskbar="False" Background="#F0F0F0">
+    <StackPanel x:Name="conteudo" Margin="16">
+        <GroupBox Header="Funcionamento" Padding="4" Margin="0,0,0,8">
+            <StackPanel Margin="8,4">
+                <CheckBox x:Name="chkAbrirComWindows" Content="Abrir junto com o Windows"/>
+                <CheckBox x:Name="chkReabrirSozinho" Content="Reabrir sozinho se fechar" Margin="0,8,0,0"/>
+                <TextBlock Text="A tela e o motor religam um ao outro." Margin="20,3,0,0"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Senha do técnico" Padding="4" Margin="0,0,0,8">
+            <StackPanel Margin="8,4">
+                <PasswordBox x:Name="txtNovaSenha" Padding="4" FontSize="13"
+                             AutomationProperties.Name="Nova senha do técnico">
+                    <PasswordBox.Style>
+                        <Style TargetType="PasswordBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=chkRemoverSenha, Path=IsChecked}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </PasswordBox.Style>
+                </PasswordBox>
+                <TextBlock Text="Deixe em branco para manter a senha atual." Margin="0,4,0,0"/>
+                <CheckBox x:Name="chkRemoverSenha" Content="Remover senha" Margin="0,8,0,0"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Manutenção" Padding="4">
+            <UniformGrid Columns="3" Margin="8,4">
+                <Button x:Name="btnReiniciarMotor" Content="Reiniciar motor" Padding="8,6"
+                        Margin="0,0,6,0" Click="btnReiniciarMotor_Click"/>
+                <Button Content="Exportar canais" Padding="8,6" Margin="0,0,6,0"
+                        Click="btnExportarCanais_Click"/>
+                <Button Content="Importar canais" Padding="8,6" Click="btnImportarCanais_Click"/>
+            </UniformGrid>
+        </GroupBox>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="Cancelar" Width="90" Padding="4,8" Margin="0,0,8,0"
+                    IsCancel="True"/>
+            <Button Content="Salvar" Width="90" Padding="4,8"
+                    IsDefault="True" Click="btnSalvar_Click"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

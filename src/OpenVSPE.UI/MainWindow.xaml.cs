@@ -24,10 +24,11 @@ namespace OpenVSPE.UI
     public partial class MainWindow : Window
     {
         private readonly ConfigManager _configManager;
-        private AppConfig _config;
+        private readonly AppConfig _config;
         private readonly DispatcherTimer _statusTimer;
         private System.Windows.Forms.NotifyIcon? _trayIcon;
         private readonly ObservableCollection<CanalItem> _canalItems = new();
+        private bool _configuracoesAbertas;
 
         public MainWindow()
         {
@@ -117,6 +118,11 @@ namespace OpenVSPE.UI
             // Menu de contexto do tray
             var menu = new System.Windows.Forms.ContextMenuStrip();
             menu.Items.Add("Abrir OpenVSPE", null, (s, e) => MostrarJanela());
+            menu.Items.Add("Configurações", null, (s, e) =>
+            {
+                MostrarJanela();
+                AbrirConfiguracoes();
+            });
             menu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
             menu.Items.Add("Sair", null, (s, e) => FecharAplicacao());
             _trayIcon.ContextMenuStrip = menu;
@@ -146,6 +152,42 @@ namespace OpenVSPE.UI
             _trayIcon?.Dispose();
             _trayIcon = null;
             System.Windows.Application.Current.Shutdown();
+        }
+
+        private void AbrirConfiguracoes()
+        {
+            if (_configuracoesAbertas)
+                return;
+
+            _configuracoesAbertas = true;
+            try
+            {
+                if (SenhaTecnico.TemSenha(_config.SenhaTecnico))
+                {
+                    var acesso = new SenhaDialog { Owner = this };
+                    if (acesso.ShowDialog() != true)
+                        return;
+
+                    if (!SenhaTecnico.Conferir(acesso.Senha, _config.SenhaTecnico))
+                    {
+                        MessageBox.Show(this, "Senha incorreta.", "Configurações",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
+
+                var configuracoes = new ConfiguracoesDialog(_config, _configManager) { Owner = this };
+                configuracoes.ShowDialog();
+                if (configuracoes.CanaisImportados)
+                {
+                    AtualizarLista();
+                    _ = NotificarServico("reload");
+                }
+            }
+            finally
+            {
+                _configuracoesAbertas = false;
+            }
         }
 
         // Minimizar para tray ao fechar a janela (X)
@@ -423,6 +465,11 @@ namespace OpenVSPE.UI
         {
             _configManager.Salvar(_config);
             AdicionarLog("Configuracao salva.");
+        }
+
+        private void btnConfiguracoes_Click(object sender, RoutedEventArgs e)
+        {
+            AbrirConfiguracoes();
         }
 
         private async void btnIniciarTodos_Click(object sender, RoutedEventArgs e)
