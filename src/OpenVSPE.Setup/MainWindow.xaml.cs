@@ -222,6 +222,12 @@ namespace OpenVSPE.Setup
             string startupShortcut = Path.Combine(startup, "OpenVSPE.lnk");
             string psStartup = $"$s=(New-Object -ComObject WScript.Shell).CreateShortcut('{startupShortcut}'); $s.TargetPath='{targetPath}'; $s.WorkingDirectory='{workDir}'; $s.IconLocation='{iconPath},0'; $s.Save()";
             ExecuteCommand("powershell.exe", $"-NoProfile -ExecutionPolicy Bypass -Command \"{psStartup}\"");
+
+            // 3. Botão "Reabrir OpenVSPE" no Desktop: fecha qualquer instância e abre uma só (WindowStyle 7 = console minimizado)
+            string reabrirBat = Path.Combine(uiDir, "Reabrir_OpenVSPE.bat");
+            string reabrirShortcut = Path.Combine(desktop, "Reabrir OpenVSPE.lnk");
+            string psReabrir = $"$s=(New-Object -ComObject WScript.Shell).CreateShortcut('{reabrirShortcut}'); $s.TargetPath='{reabrirBat}'; $s.WorkingDirectory='{uiDir}'; $s.IconLocation='{iconPath},0'; $s.WindowStyle=7; $s.Save()";
+            ExecuteCommand("powershell.exe", $"-NoProfile -ExecutionPolicy Bypass -Command \"{psReabrir}\"");
         }
 
         private void ExecuteCommand(string fileName, string args)

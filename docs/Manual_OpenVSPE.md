@@ -25,6 +25,8 @@ A instalação é quase toda automática:
 
 Depois disso, sempre que o computador ligar, o ícone do OpenVSPE fica na bandeja do sistema, perto do relógio.
 
+Se alguém fechar o programa, ou se ele travar, use o atalho "Reabrir OpenVSPE" na área de trabalho. Ele fecha o que tiver sobrado aberto e abre o OpenVSPE de novo, sempre com uma cópia só. O programa volta para a bandeja do relógio.
+
 ## Como configurar
 
 A tela principal mostra a lista de conexões, que o programa chama de canais.
