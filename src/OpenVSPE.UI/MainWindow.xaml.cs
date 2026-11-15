@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using OpenVSPE.Core;
 using OpenVSPE.Core.Configuration;
 using OpenVSPE.Core.Models;
 using OpenVSPE.UI.Services;
@@ -47,7 +48,7 @@ namespace OpenVSPE.UI
             // Configura o system tray icon
             ConfigurarTrayIcon();
 
-            // Timer para status do servico
+            // Temporizador para atualizar o estado dos canais e vigiar o motor.
             _statusTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
             _statusTimer.Tick += async (s, e) => await SincronizarTudoAsync();
             _statusTimer.Start();
@@ -63,6 +64,21 @@ namespace OpenVSPE.UI
 
         private async Task SincronizarTudoAsync()
         {
+            // Verifica o motor mesmo quando uma consulta de estado ainda está em andamento.
+            try
+            {
+                if (_config.ReabrirSozinho
+                    && !Vigia.MotorAberto()
+                    && Vigia.AbrirMotor(AppDomain.CurrentDomain.BaseDirectory))
+                {
+                    AdicionarLog("Motor reaberto pelo vigia");
+                }
+            }
+            catch (Exception ex)
+            {
+                AdicionarLog($"Erro ao verificar o motor do OpenVSPE: {ex.Message}");
+            }
+
             if (_isSyncing) return;
             _isSyncing = true;
             try
@@ -119,6 +135,14 @@ namespace OpenVSPE.UI
 
         private void FecharAplicacao()
         {
+            if (_config.ReabrirSozinho)
+            {
+                MessageBox.Show(
+                    "O OpenVSPE está protegido contra fechamento. Para fechar, desligue 'Reabrir sozinho se fechar' em Configurações.",
+                    "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             _trayIcon?.Dispose();
             _trayIcon = null;
             System.Windows.Application.Current.Shutdown();
