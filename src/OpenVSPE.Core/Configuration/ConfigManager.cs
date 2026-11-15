@@ -82,6 +82,42 @@ namespace OpenVSPE.Core.Configuration
         }
 
         /// <summary>
+        /// Exporta os canais no formato do arquivo de configuração.
+        /// </summary>
+        public static string ExportarCanais(AppConfig config)
+        {
+            return JsonSerializer.Serialize(new ArquivoDeCanais { Canais = config.Canais }, _jsonOptions);
+        }
+
+        /// <summary>
+        /// Lê os canais de uma exportação ou do arquivo de configuração e valida os conflitos.
+        /// </summary>
+        public static List<ChannelConfig> LerCanaisExportados(string json)
+        {
+            List<ChannelConfig>? canais;
+            try
+            {
+                canais = JsonSerializer.Deserialize<ArquivoDeCanais>(json, _jsonOptions)?.Canais;
+            }
+            catch (JsonException ex)
+            {
+                throw new InvalidDataException("O arquivo não contém um JSON válido de canais.", ex);
+            }
+
+            if (canais is not { Count: > 0 })
+                throw new InvalidDataException("O arquivo não tem nenhum canal.");
+
+            if (canais.Any(canal => canal is null || string.IsNullOrEmpty(canal.Id) || canal.IpsPermitidos is null))
+                throw new InvalidDataException("O arquivo contém um canal inválido.");
+
+            var erros = ValidarConflitos(new AppConfig { Canais = canais });
+            if (erros.Count > 0)
+                throw new InvalidDataException(string.Join(Environment.NewLine, erros));
+
+            return canais;
+        }
+
+        /// <summary>
         /// Valida se há conflito de portas TCP entre os canais.
         /// Retorna lista de erros encontrados.
         /// </summary>
@@ -120,6 +156,11 @@ namespace OpenVSPE.Core.Configuration
             }
 
             return erros;
+        }
+
+        private sealed class ArquivoDeCanais
+        {
+            public List<ChannelConfig>? Canais { get; init; }
         }
     }
 }
