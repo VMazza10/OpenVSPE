@@ -61,6 +61,16 @@ Para testar uma impressora, selecione-a na lista e clique em "Testar". Um cupom 
 
 O botão "Logs" abre a pasta com tudo o que o OpenVSPE recebeu e processou no dia. É o primeiro lugar para olhar quando algo não funciona.
 
+## Configurações
+
+Abra **Configurações** na barra superior, ao lado de **Salvar**, ou pelo menu do ícone do OpenVSPE na bandeja do sistema.
+
+- **Abrir junto com o Windows** cria ou remove o atalho `OpenVSPE.lnk` da pasta Inicializar do usuário.
+- **Reabrir sozinho se fechar** vem ligado por padrão. A tela e o motor religam um ao outro em poucos segundos. Com o vigia ligado, **Sair** mostra um aviso. Para fechar a tela, desmarque a opção, clique em **Salvar** e use **Sair** na bandeja. O motor continua rodando.
+- **Senha do técnico** protege o acesso a **Configurações**. Digite uma senha e clique em **Salvar** para definir ou trocar. Deixe o campo em branco para manter a senha atual. Para retirá-la, marque **Remover senha** e salve.
+- **Reiniciar motor** religa o motor sem reiniciar o Windows.
+- **Exportar canais** salva a lista em um arquivo `.json`. **Importar canais** valida o arquivo e pede confirmação antes de substituir os canais atuais. A importação preserva a senha e as demais opções.
+
 ## Dúvidas frequentes
 
 ### O sistema de vendas mostra "Timeout" ou "Erro de String vazia" ao imprimir
