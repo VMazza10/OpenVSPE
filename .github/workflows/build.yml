@@ -14,3 +14,4 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - run: dotnet build OpenVSPE.sln -c Release
+      - run: dotnet test OpenVSPE.sln -c Release --no-build
