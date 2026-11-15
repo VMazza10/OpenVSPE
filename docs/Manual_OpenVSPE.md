@@ -27,6 +27,8 @@ Depois disso, sempre que o computador ligar, o ícone do OpenVSPE fica na bandej
 
 Se alguém fechar o programa, ele abre de novo sozinho em poucos segundos (veja "Reabrir sozinho se fechar" em Configurações). Se ele travar sem fechar, rode o `Reabrir_OpenVSPE.bat` da pasta `C:\Program Files (x86)\OpenVSPE\ui`. Ele fecha o que tiver sobrado aberto e abre o OpenVSPE de novo, sempre com uma cópia só.
 
+Para desinstalar, abra o mesmo instalador (`OpenVSPE_V*.exe`) e clique em **Desinstalar**. Ele fecha o programa, apaga os arquivos, os atalhos e a regra do firewall, e pergunta se deve apagar também os canais e os logs. Escolha **Não** se for instalar de novo.
+
 ## Como configurar
 
 A tela principal mostra a lista de conexões, que o programa chama de canais.

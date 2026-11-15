@@ -86,6 +86,8 @@
                            FontSize="11" Opacity="0.5" FontStyle="Italic"/>
                 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="btnUninstall" Content="Desinstalar" Click="btnUninstall_Click" Width="100" Height="35" Margin="5"
+                            Style="{StaticResource SecondaryButton}" Visibility="Collapsed"/>
                     <Button x:Name="btnCancel" Content="Cancelar" Click="btnCancel_Click" Width="100" Height="35" Margin="5" 
                             Style="{StaticResource SecondaryButton}"/>
                     <Button x:Name="btnInstall" Content="Instalar Agora" Click="btnInstall_Click" Width="120" Height="35" Margin="5"

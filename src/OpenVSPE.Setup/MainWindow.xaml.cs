@@ -13,6 +13,66 @@ namespace OpenVSPE.Setup
         public MainWindow()
         {
             InitializeComponent();
+            if (Directory.Exists(_targetDir))
+                btnUninstall.Visibility = Visibility.Visible;
+        }
+
+        private async void btnUninstall_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Remover o OpenVSPE deste computador?", "Desinstalar",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            bool apagarCanais = MessageBox.Show("Apagar também os canais e os logs?\n\nEscolha Não se for instalar de novo.", "Desinstalar",
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes;
+
+            try
+            {
+                btnInstall.IsEnabled = btnCancel.IsEnabled = btnUninstall.IsEnabled = false;
+                pbProgress.Visibility = Visibility.Visible;
+                lblSubStatus.Visibility = Visibility.Visible;
+
+                await Task.Run(() => PerformUninstall(apagarCanais));
+
+                lblStatus.Text = "OpenVSPE removido deste computador.";
+                lblSubStatus.Text = apagarCanais ? "Os canais e os logs também foram apagados." : "Os canais ficaram guardados para uma próxima instalação.";
+                btnUninstall.Visibility = Visibility.Collapsed;
+                btnInstall.Content = "Concluir";
+                btnInstall.IsEnabled = true;
+                btnInstall.Click -= btnInstall_Click;
+                btnInstall.Click += (s, ev) => Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro durante a desinstalação: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                btnInstall.IsEnabled = btnCancel.IsEnabled = btnUninstall.IsEnabled = true;
+            }
+        }
+
+        private void PerformUninstall(bool apagarCanais)
+        {
+            UpdateUI("Fechando o OpenVSPE...", 10);
+            StopExistingProcesses();
+
+            UpdateUI("Removendo serviço antigo...", 30);
+            RemoverServicoAntigo();
+
+            UpdateUI("Removendo atalhos e regra do firewall...", 50);
+            string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string startup = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+            foreach (var atalho in new[] { Path.Combine(desktop, "OpenVSPE.lnk"), Path.Combine(desktop, "Reabrir OpenVSPE.lnk"), Path.Combine(startup, "OpenVSPE.lnk") })
+                File.Delete(atalho);
+            ExecuteCommand("netsh", "advfirewall firewall delete rule name=\"OpenVSPE TCP\"");
+
+            UpdateUI("Apagando arquivos...", 70);
+            if (Directory.Exists(_targetDir))
+                Directory.Delete(_targetDir, true);
+
+            string dados = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "OpenVSPE");
+            if (apagarCanais && Directory.Exists(dados))
+                Directory.Delete(dados, true);
+
+            UpdateUI("Concluído!", 100);
         }
 
         private async void btnInstall_Click(object sender, RoutedEventArgs e)
@@ -89,7 +149,7 @@ namespace OpenVSPE.Setup
             CopyFiles(serviceSource, Path.Combine(_targetDir, "service"));
 
             UpdateUI("Registrando serviço no Windows...", 70);
-            InstallService();
+            RemoverServicoAntigo();
 
             UpdateUI("Configurando Firewall...", 85);
             ConfigureFirewall();
@@ -193,7 +253,7 @@ namespace OpenVSPE.Setup
             }
         }
 
-        private void InstallService()
+        private void RemoverServicoAntigo()
         {
             // Remove o serviço antigo (Session 0) pois agora o motor roda no User Session (Session 1) para evitar bug do CH340
             ExecuteCommand("sc.exe", "stop OpenVSPE");
